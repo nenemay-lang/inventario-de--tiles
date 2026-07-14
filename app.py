@@ -1,5 +1,5 @@
-
 import streamlit as st
+import pandas as pd
 
 st.set_page_config(
     page_title="Gestión de Insumos",
@@ -9,17 +9,32 @@ st.set_page_config(
 
 st.title("📦 Sistema de Gestión de Stock de Insumos")
 
-st.markdown("""
-### Bienvenida
+# Cargar Excel
+df = pd.read_excel("Listado de insumos.xlsx")
 
-Esta aplicación permitirá:
+# Resumen
+col1, col2, col3 = st.columns(3)
 
-- Consultar stock.
-- Registrar ingresos.
-- Registrar egresos.
-- Controlar stock mínimo.
-- Generar alertas de reposición.
-- Analizar consumo por sector.
-""")
+col1.metric("Total de Insumos", len(df))
 
-st.info("Versión 1 - Proyecto en desarrollo")
+col2.metric(
+    "Stock Crítico",
+    len(df[df["EXISTENCIA"] <= df["STOCK MINIMO"]])
+)
+
+col3.metric(
+    "Existencia Total",
+    df["EXISTENCIA"].sum()
+)
+
+st.divider()
+
+st.subheader("Inventario")
+
+st.dataframe(df, use_container_width=True)
+
+st.subheader("Productos con Stock Bajo")
+
+stock_bajo = df[df["EXISTENCIA"] <= df["STOCK MINIMO"]]
+
+st.dataframe(stock_bajo, use_container_width=True)
