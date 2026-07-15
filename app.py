@@ -13,7 +13,17 @@ st.set_page_config(
 st.title("📦 Sistema de Gestión de Stock de Insumos")
 
 # INVENTARIO
-df = pd.read_excel("Listado de insumos.xlsx")
+
+import sqlite3
+
+conn = sqlite3.connect(
+    "insumos.db"
+)
+
+df = pd.read_sql(
+    "SELECT * FROM productos",
+    conn
+)
 
 df["STOCK MINIMO"] = pd.to_numeric(df["STOCK MINIMO"], errors="coerce")
 df["EXISTENCIA"] = pd.to_numeric(df["EXISTENCIA"], errors="coerce")
