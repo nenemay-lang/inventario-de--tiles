@@ -12,6 +12,12 @@ st.title("📦 Sistema de Gestión de Stock de Insumos")
 # Cargar Excel
 df = pd.read_excel("Listado de insumos.xlsx")
 
+df["STOCK MINIMO"] = pd.to_numeric(df["STOCK MINIMO"], errors="coerce")
+df["EXISTENCIA"] = pd.to_numeric(df["EXISTENCIA"], errors="coerce")
+
+df["STOCK MINIMO"] = df["STOCK MINIMO"].fillna(0)
+df["EXISTENCIA"] = df["EXISTENCIA"].fillna(0)
+
 # Resumen
 col1, col2, col3 = st.columns(3)
 
