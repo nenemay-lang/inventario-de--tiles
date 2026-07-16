@@ -14,16 +14,20 @@ st.title("📦 Sistema de Gestión de Stock de Insumos")
 
 # INVENTARIO
 
-import sqlite3
+df = pd.read_excel("Listado de insumos.xlsx")
 
-conn = sqlite3.connect(
-    "insumos.db"
+df["STOCK MINIMO"] = pd.to_numeric(
+    df["STOCK MINIMO"],
+    errors="coerce"
 )
 
-df = pd.read_sql(
-    "SELECT * FROM productos",
-    conn
+df["EXISTENCIA"] = pd.to_numeric(
+    df["EXISTENCIA"],
+    errors="coerce"
 )
+
+df["STOCK MINIMO"] = df["STOCK MINIMO"].fillna(0)
+df["EXISTENCIA"] = df["EXISTENCIA"].fillna(0)
 
 df["STOCK MINIMO"] = pd.to_numeric(df["STOCK MINIMO"], errors="coerce")
 df["EXISTENCIA"] = pd.to_numeric(df["EXISTENCIA"], errors="coerce")
